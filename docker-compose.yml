@@ -1,0 +1,22 @@
+version: '2'
+services:
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - /var/www/snsl:/laravel
+            - /var/www/snsl2:/laravel2
+        links:
+            - fpm
+
+    fpm:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        volumes:
+            - /var/www/snsl:/laravel
+            - /var/www/snsl2:/laravel2
+        expose:
+            - 9000
